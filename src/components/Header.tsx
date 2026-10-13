@@ -25,7 +25,7 @@ export default function Header() {
     <header className={`site-header${scrolled ? " scrolled" : ""}`}>
       <div className="header-bar">
         <a href="#top" className="brand" aria-label="VisaBanana home">
-          <img src="/visabanana-logo.png" alt="VisaBanana" />
+          <img src="https://cdn.storebox.ai/media/08a90ad3-d492-4026-9b81-4124cb68e5fe/a4b3c724-6f83-4c50-a61a-80ff8411a781/visabanana-logo.png" alt="VisaBanana" />
         </a>
 
         <nav className="desktop-nav" aria-label="Main">

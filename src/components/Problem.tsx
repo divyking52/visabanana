@@ -42,23 +42,23 @@ export default function Problem() {
     if (!scrub) return;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const mobileMq = window.matchMedia("(max-width: 1000px)");
+    const narrowMq = window.matchMedia("(max-width: 1000px)");
     const items = [...scrub.querySelectorAll<HTMLElement>("[data-pop]")];
     const score = scoreRef.current;
 
-    const apply = (progress: number, isMobile: boolean) => {
-      const scoreT = clamp(easeOutBack(clamp(progress / (isMobile ? 0.18 : 0.12))));
+    const apply = (progress: number, narrow: boolean) => {
+      const scoreT = clamp(easeOutBack(clamp(progress / (narrow ? 0.14 : 0.12))));
       if (score) {
         score.style.opacity = scoreT.toFixed(3);
         score.style.transform = `scale(${(0.68 + 0.32 * scoreT).toFixed(3)})`;
       }
 
-      const cardStart = isMobile ? 0.12 : 0.1;
-      const slot = isMobile ? 0.12 : 0.13;
-      const popDuration = isMobile ? 0.14 : 0.1;
-      // Mobile stacks vertically — pop up from the score, not sideways (avoids overflow).
-      const fromXAmt = isMobile ? 0 : 220;
-      const fromYAmt = isMobile ? 56 : 48;
+      const cardStart = 0.1;
+      const slot = narrow ? 0.12 : 0.13;
+      const popDuration = narrow ? 0.12 : 0.1;
+      // Same fan-out as desktop; travel scales with viewport so mobile feels proportional.
+      const fromXAmt = narrow ? Math.min(220, Math.max(120, window.innerWidth * 0.28)) : 220;
+      const fromYAmt = 48;
 
       for (const el of items) {
         const i = Number(el.dataset.pop);
@@ -70,7 +70,7 @@ export default function Problem() {
         const towardCenter = el.dataset.side === "right" ? -1 : 1;
         const row = Number(el.dataset.row) || 0;
         const fromX = towardCenter * fromXAmt;
-        const fromY = isMobile ? fromYAmt : (1 - row) * fromYAmt;
+        const fromY = (1 - row) * fromYAmt;
         const x = fromX * (1 - bounce);
         const y = fromY * (1 - bounce);
         const scale = 0.2 + 0.8 * bounce;
@@ -80,31 +80,21 @@ export default function Problem() {
     };
 
     if (reduceMotion) {
-      apply(1, mobileMq.matches);
+      apply(1, narrowMq.matches);
       return;
     }
 
-    // Scroll-linked in both directions: progress rises going down, reverses going back up.
-    const progressFor = (isMobile: boolean) => {
+    // Sticky scrub on all viewports — progress rises going down, reverses going back up.
+    const progressFor = () => {
       const rect = scrub.getBoundingClientRect();
-      const vh = window.innerHeight;
-
-      if (!isMobile) {
-        const travel = Math.max(rect.height - vh, 1);
-        return clamp(-rect.top / travel);
-      }
-
-      // Mobile (no tall sticky): map section travel through the viewport.
-      const start = vh * 0.85;
-      const end = vh * 0.2 - rect.height * 0.35;
-      return clamp((start - rect.top) / (start - end));
+      const travel = Math.max(rect.height - window.innerHeight, 1);
+      return clamp(-rect.top / travel);
     };
 
     let frame = 0;
     const update = () => {
       frame = 0;
-      const isMobile = mobileMq.matches;
-      apply(progressFor(isMobile), isMobile);
+      apply(progressFor(), narrowMq.matches);
     };
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(update);
@@ -113,11 +103,11 @@ export default function Problem() {
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
-    mobileMq.addEventListener?.("change", onScroll);
+    narrowMq.addEventListener?.("change", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
-      mobileMq.removeEventListener?.("change", onScroll);
+      narrowMq.removeEventListener?.("change", onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
   }, []);
@@ -185,16 +175,14 @@ export default function Problem() {
                 })}
               </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <div className="container">
-        <div className="problem-cta" data-scroll-fade>
-          <h3>We fix it before it becomes a refusal.</h3>
-          <a href="#destinations" className="btn btn-primary">
-            Start assessment
-          </a>
+            <div className="problem-cta" data-scroll-fade>
+              <h3>We fix it before it becomes a refusal.</h3>
+              <a href="#destinations" className="btn btn-primary">
+                Start assessment
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>

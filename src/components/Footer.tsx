@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="container footer-grid">
         <div>
-          <img src="/visabanana-logo.png" alt="VisaBanana" className="footer-logo" />
+          <img src="https://cdn.storebox.ai/media/08a90ad3-d492-4026-9b81-4124cb68e5fe/a4b3c724-6f83-4c50-a61a-80ff8411a781/visabanana-logo.png" alt="VisaBanana" className="footer-logo" />
           <p className="muted">
             Apply for tourist visas online to the USA, UAE, Schengen, Japan, Vietnam, China and 50+ countries.
           </p>

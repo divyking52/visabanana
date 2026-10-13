@@ -34,7 +34,7 @@ export default function Hero({ query, onQueryChange }: Props) {
           playsInline
           preload="metadata"
         >
-          <source src="/hero-bg.mp4" type="video/mp4" />
+          <source src="https://cdn.storebox.ai/media/08a90ad3-d492-4026-9b81-4124cb68e5fe/f1f3a775-660b-4902-8b21-2cf43f227bb8/hero-bg.mp4" type="video/mp4" />
         </video>
         <div className="hero-video-shade" />
       </div>

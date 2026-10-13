@@ -79,7 +79,7 @@ export default function GlobeCta() {
             data-parallax="0.08"
             role="img"
             aria-label="Drag to spin the globe"
-            style={{ backgroundImage: "url(/images/globe.jpg)" }}
+            style={{ backgroundImage: "url(https://cdn.storebox.ai/media/08a90ad3-d492-4026-9b81-4124cb68e5fe/c2887f72-2795-46fd-922f-cea74ba3389a/globe.jpg)" }}
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
             onPointerUp={endDrag}

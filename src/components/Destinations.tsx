@@ -37,13 +37,17 @@ export default function Destinations({ query }: Props) {
       return;
     }
 
+    const narrow = window.matchMedia("(max-width: 1000px)").matches;
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           entry.target.classList.toggle("in", entry.isIntersecting);
         }
       },
-      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
+      {
+        threshold: narrow ? 0.06 : 0.1,
+        rootMargin: narrow ? "0px 0px -8% 0px" : "0px 0px -40px 0px",
+      },
     );
 
     cards.forEach((el) => {

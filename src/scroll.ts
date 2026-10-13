@@ -32,6 +32,7 @@ export function useScrollEffects() {
 
     let observer: IntersectionObserver | undefined;
     if ("IntersectionObserver" in window) {
+      const narrow = window.matchMedia("(max-width: 1000px)").matches;
       observer = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
@@ -41,7 +42,10 @@ export function useScrollEffects() {
             }
           }
         },
-        { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
+        {
+          threshold: narrow ? 0.08 : 0.15,
+          rootMargin: narrow ? "0px 0px -4% 0px" : "0px 0px -8% 0px",
+        },
       );
       reveals.forEach((el) => observer?.observe(el));
     }
